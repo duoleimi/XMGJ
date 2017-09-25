@@ -1,5 +1,6 @@
 package XMGJ.zsgj.model;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -65,6 +66,7 @@ public class HttpProcessor {
 			@Override
 			public void onResponse(Call call, Response response)
 					throws IOException {
+				System.out.println("response.code() = " + response.code());
 				System.out.println("recv:"+response.body().contentLength());
 				decryptResp(response);
 //				char[] resp = new char[28];
@@ -110,7 +112,7 @@ public class HttpProcessor {
 	
 	@SneakyThrows
 	private static void decryptResp(Response response) {
-		DataInputStream stream = new DataInputStream(response.body().byteStream());
+		DataInputStream stream = new DataInputStream(new ByteArrayInputStream(response.body().bytes()));
 		int status = stream.readInt();
 		if (status != 1) {
 			// TODO FAIL
