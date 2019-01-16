@@ -6,8 +6,10 @@ import java.util.List;
 import org.aspectj.apache.bcel.util.ByteSequence;
 
 import com.google.common.collect.Lists;
+import com.zzy.base.utils.JsonUtil;
 
 import lombok.Data;
+import lombok.SneakyThrows;
 
 @Data
 public class OnlineStationObj implements IBusParser {
@@ -24,7 +26,7 @@ public class OnlineStationObj implements IBusParser {
 	
 	
 	@Override
-//	@SneakyThrows
+	@SneakyThrows
 	public void decode(byte[] data) {
 		ByteSequence stream = new ByteSequence(data);
 		
@@ -43,18 +45,19 @@ public class OnlineStationObj implements IBusParser {
 			for (int i = 0; i < stationCount; i++) {
 				short strLen = stream.readShort();
 				offset += 2 + strLen;
-				System.out.println("read:"+ strLen);
+//				System.out.println("read:"+ strLen);
 				byte[] b = new byte[strLen];
 				stream.readFully(b);
 				String station = new String(b, "utf-8");
 				
-				System.out.println(offset);
-				System.out.println(stream.getIndex());
+//				System.out.println(offset);
+//				System.out.println(stream.getIndex());
 				
-				System.out.println("read3:"+ station.getBytes("utf-8").length);
-				System.out.println("read:"+ station);
+//				System.out.println("read3:"+ station.getBytes("utf-8").length);
+//				System.out.println("read:"+ station);
 				stations.add(station);
 			}
+			System.out.println(JsonUtil.bean2Json(stations));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
